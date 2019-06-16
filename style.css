@@ -1,0 +1,36 @@
+#myCanvas{
+    border:1px solid #000000;
+    margin-left: 300px;
+    margin-right: auto;
+    background: #FFF;
+}
+
+button{
+    border-radius: 5px;
+    padding: 10px;
+    border: 0;
+    background: #da552f;
+    color: #FFF;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+button:hover{
+    opacity: 0.7;
+}
+
+input[type=text] {
+    padding: 12px 20px;
+    margin: 8px 0;
+    width: 100px;
+    border: 2px solid #da552f;
+    border-radius: 4px;
+}
+
+body{
+    background-color: #DFD880;
+}
+
+h3{
+    color: #da552f;
+}

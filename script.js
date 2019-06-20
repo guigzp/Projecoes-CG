@@ -1,14 +1,16 @@
-const pontoVista = [3,2,1];
-const pontoPlano = [1,2,4];
-const ponto1 = [2,2,2]
-const ponto2 = [3,2,1]
-const ponto3 = [4,5,7]
+const pontoVista = [3,2,8];
+const pontoPlano = [0,0,0];
+const ponto1 = [1,0,0]
+const ponto2 = [0,0,0]
+const ponto3 = [0,1,0]
 const normal = [];
+var quantidadeVertices = 8;
 var d, d0, d1;
 var coordenadasPlano = [];
 var matrizPerspectiva = [];
-var matrizProjecao = [];
-var matrizObjeto = [2,7,9,1];
+var matrizProjecao = [[],[],[],[]];
+var matrizHomogenea = [[],[],[],[]];
+var matrizObjeto = [[3,4,4,3,4,4,3,3], [3,4,3,4,4,3,3,4], [3,4,3,3,3,4,4,4], [1,1,1,1,1,1,1,1]];
 
 function calculaVetorNormal(){
     normal[0] = (ponto1[1] - ponto2[1]) * (ponto3[2] - ponto2[2]) 
@@ -34,23 +36,36 @@ function calculoMatrizPerspectiva() {
     matrizPerspectiva[1] = [b * nx, d + b * ny, b * nz, -b * d0];
     matrizPerspectiva[2] = [c * nx, c * ny, d + c * nz, -c * d0];
     matrizPerspectiva[3] = [nx, ny, nz, -d1];
-}
-
-function calculoProjecao(){
-    let qtd = matrizObjeto.length;
-    for (var i = 0; i < qtd; i ++){
-        matrizProjecao[i] = 0;
-        for (var j = 0; j < qtd; j++){
-            matrizProjecao[i] += matrizPerspectiva[i][j] * matrizObjeto[j];
+    for (let x = 0; x < 4; x ++){
+        for (let y = 0; y < 4; y++){
+            if(matrizPerspectiva[x][y] == -0){
+                matrizPerspectiva[x][y] = 0;
+            }
         }
     }
 }
 
+function calculaMatrizProjecao(){
+    for (let i = 0; i < 4; i++){
+        for (let j = 0; j < quantidadeVertices; j++){
+            matrizProjecao[i][j] = 0;
+            for (let k = 0; k < 4; k++){
+                matrizProjecao[i][j] += matrizPerspectiva[i][k] * matrizObjeto[k][j];
+            }
+        }
+    }
+
+}
+
 function transformaParaCartesianas(){
-    let qtd = matrizProjecao.length;
-    let z = matrizProjecao[qtd - 1];
-    for (var i = 0; i < qtd; i++){
-        matrizProjecao[i] /= z;
+    for (let i = 0; i < quantidadeVertices; i++){
+        let valorW = matrizProjecao[3][i];
+        for(let j = 0; j < 4; j ++){
+            matrizHomogenea[j][i] = matrizProjecao[j][i] / valorW;
+            if(matrizHomogenea[j][i] === -0 ){
+                matrizHomogenea[j][i] = 0;
+            }
+        }
     }
 }
 
@@ -58,10 +73,10 @@ function calculaProjecao() {
     calculaVetorNormal();
     calculoD();
     calculoMatrizPerspectiva();
-    calculoProjecao();
+    calculaMatrizProjecao();
     transformaParaCartesianas();
-    coordenadasPlano[0] = matrizProjecao[0];
-    coordenadasPlano[1] = matrizProjecao[1];
+    //console.log(matrizProjecao);
+    console.log(matrizHomogenea);
 }
 
 function desenhaLinha(){
@@ -79,4 +94,6 @@ function desenhaLinha(){
     }
 }
 
+
+calculaProjecao();
 

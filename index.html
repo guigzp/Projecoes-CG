@@ -1,22 +1,113 @@
-<html>
-    <head>
-        <script src="script.js"></script>
-        <link rel="stylesheet" type="text/css" href="style.css" />
-    </head>
-    <body>
-        <canvas id="myCanvas" width="800" height="600"></canvas>
-        <br>
-        <h3>Coordenadas Início da Linha</h1>
-        <label for="pontoX">Valor em X</label>
-        <input type="text" id="pontoX">
-        <label for="pontoY">Valor em Y</label>
-        <input type="text" id="pontoY">
-        <br>
-        <h3>Coordenadas Fim da Linha</h1>
-        <label for="pontoX2">Valor em X</label>
-        <input type="text" id="pontoX2">
-        <label for="pontoY2">Valor em Y</label>
-        <input type="text" id="pontoY2">
-        <button type="button" onclick="desenhaCanvas()">Me Clica Cuzão</button>
-    </body>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeção CG</title>
+</head>
+<body>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalCena" id="botaoModalCena">
+        Dados da Cena
+    </button>
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+            Dados do Objeto
+    </button>
+      
+    <!-- 
+    <canvas id="myCanvas" width="640" height="480"></canvas>
+    -->
+    
+      
+      
+      <!-- Modal -->
+      <div class="modal fade" id="modalCena" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+      
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Defina os Dados da Cena</h4>
+            </div>
+            
+            
+            <div class="modal-body" style="text-align:center">
+
+                <h4 style="text-align: center; padding: 0;">Defina o Ponto de Vista</h4>
+                <input type="number" id="inputVistaX"  placeholder="Coordenada x" />
+                <input type="number" id="inputVistaY"  placeholder="Coordenada y" />
+                <input type="number" id="inputVistaZ"  placeholder="Coordenada z" />
+
+                <hr>
+
+                <h4 style="text-align: center; padding: 0;">Defina o Plano</h4>
+                <h5 style="text-align: left">Ponto 1</h5>
+                <input type="number" id="inputP1x" placeholder="Coordenada x" />
+                <input type="number" id="inputP1y" placeholder="Coordenada y" />
+                <input type="number" id="inputP1z" placeholder="Coordenada z" />
+                <h5 style="text-align: left">Ponto 2</h5>
+                <input type="number" id="inputP2x" placeholder="Coordenada x" />
+                <input type="number" id="inputP2y" placeholder="Coordenada y" />
+                <input type="number" id="inputP2z" placeholder="Coordenada z" />
+                <h5 style="text-align: left">Ponto 3</h5>
+                <input type="number" id="inputP3x" placeholder="Coordenada x" />
+                <input type="number" id="inputP3y" placeholder="Coordenada y" />
+                <input type="number" id="inputP3z" placeholder="Coordenada z" />
+                <h5 style="text-align: left">Ponto do Plano</h5>
+                <input type="number" id="inputPlanoX" placeholder="Coordenada x" />
+                <input type="number" id="inputPlanoY" placeholder="Coordenada y" />
+                <input type="number" id="inputPlanoZ" placeholder="Coordenada z" />
+
+            </div>
+      
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+              <button id="btAtualizarCena" type="button" class="btn btn-primary" data-dismiss="modal">Atualizar</button>
+            </div>
+      
+          </div>
+        </div>
+      </div>
+      
+      
+      
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+      
+      <!-- jQuery library -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      
+      <!-- Latest compiled JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+      
+      <script src="./script.js"></script>
+      <link rel="stylesheet" type="text/css" href="style.css" />
+</body>
 </html>
+
+
+
+
+
+
+
+<!-- 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Atualizar valores</h4>
+        </div>
+        <div class="modal-body">
+          <input id="novoValor" type="text" placeholder="Digite o valor">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+          <button id="btAtualizarValor" type="button" class="btn btn-primary" data-dismiss="modal">Atualizar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+-->

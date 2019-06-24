@@ -158,4 +158,56 @@ function desenhaCanvas(){
     }
 }
 
+$(function(){
+	$("#botaoModalCena").click(function(){
+        $("#inputVistaX").val(pontoVista[0]);
+        $("#inputVistaY").val(pontoVista[1]);
+        $("#inputVistaZ").val(pontoVista[2]);
+
+        $("#inputP1x").val(ponto1[0]);
+        $("#inputP1y").val(ponto1[1]);
+        $("#inputP1z").val(ponto1[2]);
+
+        $("#inputP2x").val(ponto2[0]);
+        $("#inputP2y").val(ponto2[1]);
+        $("#inputP2z").val(ponto2[2]);
+
+        $("#inputP3x").val(ponto3[0]);
+        $("#inputP3y").val(ponto3[1]);
+        $("#inputP3z").val(ponto3[2]);
+
+        $("#inputPlanoX").val(pontoPlano[0]);
+        $("#inputPlanoY").val(pontoPlano[1]);
+        $("#inputPlanoZ").val(pontoPlano[2]);
+        
+    });
+
+    $("#btAtualizarCena").click(function(){
+
+        // Checar se todos os campos estão preenchidos
+        // Checar se os pontos do plano são uma base
+
+        pontoVista[0] = $("#inputVistaX").val();
+        pontoVista[1] = $("#inputVistaY").val();
+        pontoVista[2] = $("#inputVistaZ").val();
+
+        ponto1[0] = $("#inputP1x").val();
+        ponto1[1] = $("#inputP1y").val();
+        ponto1[2] = $("#inputP1z").val();
+
+        ponto2[0] = $("#inputP2x").val();
+        ponto2[1] = $("#inputP2y").val();
+        ponto2[2] = $("#inputP2z").val();
+
+        ponto3[0] = $("#inputP3x").val();
+        ponto3[1] = $("#inputP3y").val();
+        ponto3[2] = $("#inputP3z").val();
+
+        pontoPlano[0] = $("#inputPlanoX").val();
+        pontoPlano[1] = $("#inputPlanoY").val();
+        pontoPlano[2] = $("#inputPlanoZ").val();
+        
+    });
+});
+
 

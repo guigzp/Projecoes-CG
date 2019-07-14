@@ -1,16 +1,17 @@
-var pontoVista = [3,2,8];
+var pontoVista = [8,2,10];
 var pontoPlano = [0,0,0];
 var ponto1 = [1,0,0];
 var ponto2 = [0,0,0];
 var ponto3 = [0,1,0];
 var normal = [];
 var quantidadeVertices = 8;
+var quantidadeSuperficies = 6;
+var superficies = [[4,3,6,5,4],[3,2,7,6,3], [8,7,2,1,8], [5,8,1,4,5],[5,6,7,8,5],[1,2,3,4,1]];
 var d, d0, d1;
-var coordenadasPlano = [];
 var matrizPerspectiva = [];
 var matrizProjecao = [[],[],[],[]];
 var matrizHomogenea = [[],[],[],[]];
-var matrizObjeto = [[3,4,4,3,4,4,3,3], [3,4,3,4,4,3,3,4], [3,4,3,3,3,4,4,4], [1,1,1,1,1,1,1,1]];
+var matrizObjeto = [[0,1,1,0,0,1,1,0],[0,0,0,0,1,1,1,1],[0,0,1,1,1,1,0,0],[1,1,1,1,1,1,1,1]];
 var matrizCartesianas = [[], []];
 var xMax, yMax, xMin, yMin;
 var uMax = 640, vMax = 480, uMin = 0, vMin = 0;
@@ -70,11 +71,18 @@ function transformaHomogeneas(){
             }
         }
     }
+    for(let i = 0; i <quantidadeVertices; i++){
+        for(let j = 0; j < 4; j ++){
+            console.log(matrizHomogenea[j][i])
+        }
+    }
+    console.log(matrizHomogenea)
 }
 
 function pegaCartesianasReflete(){
     matrizCartesianas[0] = matrizHomogenea[0];
     matrizCartesianas[1] = matrizHomogenea[1].map(element => -1 * element);
+    matrizCartesianas[2] = matrizHomogenea[3];
 }
 
 function pegaCartesianas(){
@@ -98,6 +106,7 @@ function calculaJanela(){
 function transladaOrigemMundo(){
     let Rw = vMax / uMax;
     let Rv = (xMax - xMin) / (yMax - yMin);
+    
     if(Rw > Rv){
         vMax = ((uMax - uMin) / Rw) + vMin;
     }else if (Rw < Rv){
@@ -106,6 +115,7 @@ function transladaOrigemMundo(){
     let Sx = (uMax - uMin) / (xMax - xMin);
     let Sy = (vMax - vMin) / (yMax - yMin);
     let matrizTranslação = [[Sx,0, (-xMin*Sx) + uMin], [0, Sy, (-yMin*Sy) + vMin], [0,0,1]];
+    
     for (let i = 0; i < 3; i++){
         for (let j = 0; j < quantidadeVertices; j++){
             let aux = 0;
@@ -124,7 +134,7 @@ function calculaProjecao() {
     calculoMatrizPerspectiva();
     calculaMatrizProjecao();
     transformaHomogeneas();
-    pegaCartesianas()
+    pegaCartesianas();
     calculaJanela();
     transladaOrigemMundo();
 }
@@ -142,17 +152,12 @@ function desenhaLinha(ponto1x, ponto1y, ponto2x, ponto2y){
 
 function desenhaCanvas(){
     calculaProjecao();
-    console.log(matrizCartesianas);
-    matrizCartesianas[0] = [337,640,640	,337,0,0,337,337];
-    matrizCartesianas[1] = [87,87,480,480,436,0,0,436];
-
-    let vertices = [[5,6,7,4,5],[6,1,2,7,6],[1,0,3,2,1],[5,0,3,4,5],[1,6,5,0,1],[7,2,3,4,7]]
-    for(let x = 0; x < vertices.length; x ++){
-        for(let y = 0; y < vertices[x].length -1; y ++){
-            let ponto1X = matrizCartesianas[0][vertices[x][y]];
-            let ponto1Y = matrizCartesianas[1][vertices[x][y]];
-            let ponto2X = matrizCartesianas[0][vertices[x][y+1]];
-            let ponto2Y = matrizCartesianas[1][vertices[x][y+1]];
+    for(let x = 0; x < quantidadeSuperficies; x ++){
+        for(let y = 0; y < superficies[x].length -1; y ++){
+            let ponto1X = matrizCartesianas[0][superficies[x][y]];
+            let ponto1Y = matrizCartesianas[1][superficies[x][y]];
+            let ponto2X = matrizCartesianas[0][superficies[x][y+1]];
+            let ponto2Y = matrizCartesianas[1][superficies[x][y+1]];
             desenhaLinha(ponto1X, ponto1Y, ponto2X, ponto2Y);
         }
     }
@@ -185,29 +190,106 @@ $(function(){
     $("#btAtualizarCena").click(function(){
 
         // Checar se todos os campos estão preenchidos
-        // Checar se os pontos do plano são uma base
+        let matrizBase = [[],[],[],[]]
 
         pontoVista[0] = $("#inputVistaX").val();
         pontoVista[1] = $("#inputVistaY").val();
         pontoVista[2] = $("#inputVistaZ").val();
 
-        ponto1[0] = $("#inputP1x").val();
-        ponto1[1] = $("#inputP1y").val();
-        ponto1[2] = $("#inputP1z").val();
+        matrizBase[0][0] = $("#inputP1x").val();
+        matrizBase[0][1] = $("#inputP1y").val();
+        matrizBase[0][2] = $("#inputP1z").val();
 
-        ponto2[0] = $("#inputP2x").val();
-        ponto2[1] = $("#inputP2y").val();
-        ponto2[2] = $("#inputP2z").val();
+        matrizBase[1][0] = $("#inputP2x").val();
+        matrizBase[1][1] = $("#inputP2y").val();
+        matrizBase[1][2] = $("#inputP2z").val();
 
-        ponto3[0] = $("#inputP3x").val();
-        ponto3[1] = $("#inputP3y").val();
-        ponto3[2] = $("#inputP3z").val();
+        matrizBase[2][0] = $("#inputP3x").val();
+        matrizBase[2][1] = $("#inputP3y").val();
+        matrizBase[2][2] = $("#inputP3z").val();
+
+        ponto1 = matrizBase[0]
+        ponto2 = matrizBase[1]
+        ponto3 = matrizBase[2]
 
         pontoPlano[0] = $("#inputPlanoX").val();
         pontoPlano[1] = $("#inputPlanoY").val();
         pontoPlano[2] = $("#inputPlanoZ").val();
         
     });
+
+    $('#btAtualizarObjeto').click(function(){
+        quantidadeVertices = parseInt($('#inputQtdVertices').val())
+        matrizObjeto = [[],[],[],[]]
+        for(let i = 0; i < quantidadeVertices; i++){
+            matrizObjeto[0][i] = parseInt($('#inputV'+(i+1)+'x').val())
+            matrizObjeto[1][i] = parseInt($('#inputV'+(i+1)+'y').val())
+            matrizObjeto[2][i] = parseInt($('#inputV'+(i+1)+'z').val())
+            matrizObjeto[3][i] = 1
+        }
+
+        quantidadeSuperficies = parseInt($('#inputQtdSuperficies').val())
+        superficies = []
+        for(let i = 0; i < quantidadeSuperficies; i ++){
+            let aux = $('#inputSuperficie'+(i+1)).val().split(',')
+            superficies.push(aux.map(element => parseInt(element)))
+        }
+    });
+
+
 });
 
+function calculaDeterminante(matriz){
+    let x1 = matriz[0][0] * matriz[1][1] * matriz[2][2]
+    let x2 = matriz[0][1] * matriz[1][2] * matriz[2][0]
+    let x3 = matriz[0][2] * matriz[1][0] * matriz[2][1]
+    let y1 = - (matriz[0][2] * matriz[1][1] * matriz[2][0])
+    let y2 = - (matriz[0][0] * matriz[1][2] * matriz[2][1])
+    let y3 = - (matriz[0][1] * matriz[1][0] * matriz[2][2])
+    return x1 + x2 + x3 + y1 + y2 + y3
+}
 
+$(function(){
+    $('#botaoModalObj').click(function(){
+        $('#inputQtdVertices').val(quantidadeVertices);
+        $('#divVertices').empty();
+        for(var i = 1; i <= quantidadeVertices; i++){
+            var inputX = '<input type="number" id="inputV'+i+'x" value="'+matrizObjeto[0][i-1]+'"placeholder="Coordenada x" />';
+            var inputY = '<input type="number" id="inputV'+i+'y" value="'+matrizObjeto[1][i-1]+'"  placeholder="Coordenada y" />';
+            var inputZ = '<input type="number" id="inputV'+i+'z" value="'+matrizObjeto[2][i-1]+'"  placeholder="Coordenada z" />';
+            var txt = '<h5 style="text-align: left">Vértice '+i+'</h5>';
+            $('#divVertices').append(txt, inputX, inputY, inputZ);
+        }
+        $('#inputQtdSuperficies').val(quantidadeSuperficies)
+        $('#divSuperficies').empty();
+        for(var i = 1; i <= quantidadeSuperficies; i++){
+            var input = '<input type="text" id="inputSuperficie'+i+'" value="' +superficies[i-1].join(',')+ '"class="inputvertice"  placeholder="Vertices separados por vírgula" />';
+            var txt = '<h5 style="text-align: left">Superfície '+i+'</h5>';
+            $('#divSuperficies').append(txt, input);
+        }
+    });
+
+
+
+    $('#inputQtdVertices').on('input', function() { 
+        $('#divVertices').empty();
+        qtd = $('#inputQtdVertices').val();
+        for(var i = 1; i <= qtd; i ++){
+            var inputX = '<input type="number" id="inputV'+i+'x"  placeholder="Coordenada x" />';
+            var inputY = '<input type="number" id="inputV'+i+'y"  placeholder="Coordenada y" />';
+            var inputZ = '<input type="number" id="inputV'+i+'z"  placeholder="Coordenada z" />';
+            var txt = '<h5 style="text-align: left">Vértice '+i+'</h5>';
+            $('#divVertices').append(txt, inputX, inputY, inputZ);
+        }
+     });
+
+     $('#inputQtdSuperficies').on('input', function() { 
+        $('#divSuperficies').empty();
+        qtdSuperficies = $('#inputQtdSuperficies').val();
+        for(var i = 1; i <= qtdSuperficies; i ++){
+            var input = '<input type="text" id="inputSuperficie'+i+'" class="inputvertice"  placeholder="Vertices separados por vírgula" />';
+            var txt = '<h5 style="text-align: left">Superfície '+i+'</h5>';
+            $('#divSuperficies').append(txt, input);
+        }
+     });
+});

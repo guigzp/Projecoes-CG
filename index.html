@@ -11,13 +11,14 @@
     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalCena" id="botaoModalCena">
         Dados da Cena
     </button>
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalObjeto" id="botaoModalObj">
             Dados do Objeto
     </button>
-      
-    <!-- 
-    <canvas id="myCanvas" width="640" height="480"></canvas>
-    -->
+    
+    <button type="button" class="btn btn-primary btn-lg" onclick="desenhaCanvas()">Projetar</button>
+    
+    <canvas id="myCanvas" width="800" height="800"></canvas>
+    
     
       
       
@@ -34,14 +35,14 @@
             
             <div class="modal-body" style="text-align:center">
 
-                <h4 style="text-align: center; padding: 0;">Defina o Ponto de Vista</h4>
+                <h4>Defina o Ponto de Vista</h4>
                 <input type="number" id="inputVistaX"  placeholder="Coordenada x" />
                 <input type="number" id="inputVistaY"  placeholder="Coordenada y" />
                 <input type="number" id="inputVistaZ"  placeholder="Coordenada z" />
 
                 <hr>
 
-                <h4 style="text-align: center; padding: 0;">Defina o Plano</h4>
+                <h4>Defina o Plano</h4>
                 <h5 style="text-align: left">Ponto 1</h5>
                 <input type="number" id="inputP1x" placeholder="Coordenada x" />
                 <input type="number" id="inputP1y" placeholder="Coordenada y" />
@@ -64,6 +65,40 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
               <button id="btAtualizarCena" type="button" class="btn btn-primary" data-dismiss="modal">Atualizar</button>
+            </div>
+      
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="modalObjeto" tabindex="-1" role="dialog" aria-labelledby="ModalObj">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+      
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="ModalObj">Defina o Objeto</h4>
+            </div>
+            
+            
+            <div class="modal-body" style="text-align:center">
+
+                <h5 style="text-align: left">Quantidade de Vértices</h5>
+                <input type="number" id="inputQtdVertices" class="inputvertice" placeholder="Quantidade de Vértices"/>
+                <div id="divVertices"></div>
+
+                <hr>
+
+                <h5 style="text-align: left">Quantidade de Superfícies</h5>
+                <input type="number" id="inputQtdSuperficies" class="inputvertice" placeholder="Quantidade de Superfícies"/>
+                <div id="divSuperficies"></div>
+
+            </div>
+      
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+              <button id="btAtualizarObjeto" type="button" class="btn btn-primary" data-dismiss="modal">Atualizar</button>
             </div>
       
           </div>

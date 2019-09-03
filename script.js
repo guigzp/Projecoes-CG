@@ -134,10 +134,10 @@ function transladaOrigemMundo() {
     uMax = Rw * (vMax - vMin) + uMin
   }
   */
-  xMax = 1.06
-  yMax = 1.14
-  xMin = -0.94
-  yMin = -0.36
+  //xMax = 1.06
+  //yMax = 1.14
+  //xMin = -0.94
+  //yMin = -0.36
   let Sx = (uMax - uMin) / (xMax - xMin)
   let Sy = (vMax - vMin) / (yMax - yMin)
   let matrizTranslação = [
@@ -156,8 +156,6 @@ function transladaOrigemMundo() {
   }
   matrizCartesianas[0] = matrizCartesianas[0].map(Math.round)
   matrizCartesianas[1] = matrizCartesianas[1].map(Math.round)
-  //matrizCartesianas.pop()
-  console.log(matrizCartesianas)
 }
 
 function calculaProjecao() {
@@ -169,6 +167,7 @@ function calculaProjecao() {
   pegaCartesianas()
   calculaJanela()
   transladaOrigemMundo()
+  // criar função para centralizar
 }
 
 function desenhaLinha(ponto1x, ponto1y, ponto2x, ponto2y) {
@@ -186,7 +185,6 @@ function desenhaCanvas() {
   calculaProjecao()
   for (let x = 0; x < quantidadeSuperficies; x++) {
     for (let y = 0; y < superficies[x].length - 1; y++) {
-      console.log(superficies[x][y], superficies[x][y + 1])
       let ponto1X = matrizCartesianas[0][superficies[x][y] - 1]
       let ponto1Y = matrizCartesianas[1][superficies[x][y] - 1]
       let ponto2X = matrizCartesianas[0][superficies[x][y + 1] - 1]

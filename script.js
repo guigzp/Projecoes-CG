@@ -158,6 +158,44 @@ function transladaOrigemMundo() {
   matrizCartesianas[1] = matrizCartesianas[1].map(Math.round)
 }
 
+function centralizaObjeto() {
+  let canvas = document.getElementById('myCanvas')
+  let dx = canvas.width / 2
+  let dy = canvas.height / 2
+  if(matrizCartesianas[0][2] < dx) {
+    dx -= (matrizCartesianas[0][1] - matrizCartesianas[0][3]) / 2
+  } else {
+    dx += (matrizCartesianas[0][1] - matrizCartesianas[0][3]) / 2
+  }
+  if(matrizCartesianas[1][2] < dy) {
+    dy -= (matrizCartesianas[1][2] - matrizCartesianas[1][6]) / 2
+  } else {
+    dy += (matrizCartesianas[1][2] - matrizCartesianas[1][6]) / 2
+  }
+  console.log(dx)
+  console.log(dy)
+  let matrizTranslação = [
+    [1, 0, dx],
+    [0, 1, dy],
+    [0, 0, 1]
+  ]
+  console.log(matrizCartesianas[0])
+  console.log(matrizCartesianas[1])
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < quantidadeVertices; j++) {
+      let aux = 0
+      for (let k = 0; k < 3; k++) {
+        aux += matrizTranslação[i][k] * matrizCartesianas[k][j]
+      }
+      matrizCartesianas[i][j] = aux
+    }
+  }
+  matrizCartesianas[0] = matrizCartesianas[0].map(Math.round)
+  matrizCartesianas[1] = matrizCartesianas[1].map(Math.round)
+  console.log(matrizCartesianas[0])
+  console.log(matrizCartesianas[1])
+}
+
 function calculaProjecao() {
   calculaVetorNormal()
   calculoD()
@@ -167,7 +205,13 @@ function calculaProjecao() {
   pegaCartesianas()
   calculaJanela()
   transladaOrigemMundo()
-  // criar função para centralizar
+  centralizaObjeto()
+}
+
+function limpaCanvas() {
+  var canvas = document.getElementById('myCanvas')
+  var ctx = canvas.getContext('2d')
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
 }
 
 function desenhaLinha(ponto1x, ponto1y, ponto2x, ponto2y) {
@@ -183,6 +227,7 @@ function desenhaLinha(ponto1x, ponto1y, ponto2x, ponto2y) {
 
 function desenhaCanvas() {
   calculaProjecao()
+  limpaCanvas()
   for (let x = 0; x < quantidadeSuperficies; x++) {
     for (let y = 0; y < superficies[x].length - 1; y++) {
       let ponto1X = matrizCartesianas[0][superficies[x][y] - 1]
@@ -196,7 +241,6 @@ function desenhaCanvas() {
 
 calculaProjecao()
 
-/*
 $(function(){
 	$("#botaoModalCena").click(function(){
         $("#inputVistaX").val(pontoVista[0]);
@@ -327,4 +371,3 @@ $(function(){
         }
      });
 });
-*/

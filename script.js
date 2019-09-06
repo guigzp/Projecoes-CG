@@ -117,32 +117,27 @@ function calculaJanela() {
   xMax = Math.max(...matrizCartesianas[0])
   yMin = Math.min(...matrizCartesianas[1])
   yMax = Math.max(...matrizCartesianas[1])
-  //xMin = xMin - 0.2 * Math.abs(xMax - xMin)
-  //xMax = xMax + 0.2 * Math.abs(xMax - xMin)
-  //yMin = yMin - 0.2 * Math.abs(yMax - yMin)
-  //yMax = yMax + 0.2 * Math.abs(yMax - yMin)
+  xMin = xMin - 0.2 * Math.abs(xMax - xMin)
+  xMax = xMax + 0.2 * Math.abs(xMax - xMin)
+  yMin = yMin - 0.2 * Math.abs(yMax - yMin)
+  yMax = yMax + 0.2 * Math.abs(yMax - yMin)
 }
 
 function transladaOrigemMundo() {
-  /*
-  let Rw = vMax / uMax
-  let Rv = (xMax - xMin) / (yMax - yMin)
-
+  let Rw = (xMax - xMin) / (yMax - yMin)
+  let Rv = (uMax - uMin) / (vMax - vMin)
+  let uMaxNovo = uMax 
+  let vMaxNovo = vMax
   if (Rw > Rv) {
-    vMax = (uMax - uMin) / Rw + vMin
+    uMaxNovo = Rw * (vMax - vMin) + uMin
   } else if (Rw < Rv) {
-    uMax = Rw * (vMax - vMin) + uMin
+    vMaxNovo = (uMax - uMin) / Rw + vMin
   }
-  */
-  //xMax = 1.06
-  //yMax = 1.14
-  //xMin = -0.94
-  //yMin = -0.36
-  let Sx = (uMax - uMin) / (xMax - xMin)
-  let Sy = (vMax - vMin) / (yMax - yMin)
+  let Sx = (uMaxNovo - uMin) / (xMax - xMin)
+  let Sy = (vMaxNovo - vMin) / (yMax - yMin)
   let matrizTranslação = [
-    [Sx, 0, -xMin * Sx + uMin],
-    [0, -Sy, yMax * Sy + vMin],
+    [Sx, 0, -Sx * xMin + (uMax - uMaxNovo) / 2 + uMin],
+    [0, -Sy, Sy * yMax + (vMax - vMaxNovo) / 2 + vMin],
     [0, 0, 1]
   ]
   for (let i = 0; i < 3; i++) {
@@ -162,10 +157,10 @@ function centralizaObjeto() {
   let canvas = document.getElementById('myCanvas')
   let dx = canvas.width / 2
   let dy = canvas.height / 2
-  let xMin = Math.min(...matrizCartesianas[0])
-  let xMax = Math.max(...matrizCartesianas[0])
-  let yMin = Math.min(...matrizCartesianas[1])
-  let yMax = Math.max(...matrizCartesianas[1])
+  xMin = Math.min(...matrizCartesianas[0])
+  xMax = Math.max(...matrizCartesianas[0])
+  yMin = Math.min(...matrizCartesianas[1])
+  yMax = Math.max(...matrizCartesianas[1])
   if (matrizCartesianas[0][0] < dx) {
     dx -= (xMax - xMin) / 2
   } else {

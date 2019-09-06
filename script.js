@@ -100,12 +100,6 @@ function transformaHomogeneas() {
   }
 }
 
-function pegaCartesianasReflete() {
-  matrizCartesianas[0] = matrizHomogenea[0]
-  matrizCartesianas[1] = matrizHomogenea[1].map(element => -1 * element)
-  matrizCartesianas[2] = matrizHomogenea[3]
-}
-
 function pegaCartesianas() {
   matrizCartesianas[0] = matrizHomogenea[0]
   matrizCartesianas[1] = matrizHomogenea[1]
@@ -117,10 +111,6 @@ function calculaJanela() {
   xMax = Math.max(...matrizCartesianas[0])
   yMin = Math.min(...matrizCartesianas[1])
   yMax = Math.max(...matrizCartesianas[1])
-  xMin = xMin - 0.2 * Math.abs(xMax - xMin)
-  xMax = xMax + 0.2 * Math.abs(xMax - xMin)
-  yMin = yMin - 0.2 * Math.abs(yMax - yMin)
-  yMax = yMax + 0.2 * Math.abs(yMax - yMin)
 }
 
 function transladaOrigemMundo() {
@@ -232,8 +222,6 @@ function desenhaCanvas() {
   }
 }
 
-calculaProjecao()
-
 $(function () {
   $("#botaoModalCena").click(function () {
     $("#inputVistaX").val(pontoVista[0]);
@@ -260,7 +248,6 @@ $(function () {
 
   $("#btAtualizarCena").click(function () {
 
-    // Checar se todos os campos estão preenchidos
     let matrizBase = [[], [], [], []]
 
     pontoVista[0] = $("#inputVistaX").val();
@@ -292,13 +279,15 @@ $(function () {
   $('#btAtualizarObjeto').click(function () {
     quantidadeVertices = parseInt($('#inputQtdVertices').val())
     matrizObjeto = [[], [], [], []]
+    matrizCartesianas = [[], []]
+    matrizHomogenea = [[], [], [], []]
+    matrizProjecao = [[], [], [], []]
     for (let i = 0; i < quantidadeVertices; i++) {
       matrizObjeto[0][i] = parseInt($('#inputV' + (i + 1) + 'x').val())
       matrizObjeto[1][i] = parseInt($('#inputV' + (i + 1) + 'y').val())
       matrizObjeto[2][i] = parseInt($('#inputV' + (i + 1) + 'z').val())
       matrizObjeto[3][i] = 1
     }
-
     quantidadeSuperficies = parseInt($('#inputQtdSuperficies').val())
     superficies = []
     for (let i = 0; i < quantidadeSuperficies; i++) {
@@ -306,19 +295,7 @@ $(function () {
       superficies.push(aux.map(element => parseInt(element)))
     }
   });
-
-
 });
-
-function calculaDeterminante(matriz) {
-  let x1 = matriz[0][0] * matriz[1][1] * matriz[2][2]
-  let x2 = matriz[0][1] * matriz[1][2] * matriz[2][0]
-  let x3 = matriz[0][2] * matriz[1][0] * matriz[2][1]
-  let y1 = - (matriz[0][2] * matriz[1][1] * matriz[2][0])
-  let y2 = - (matriz[0][0] * matriz[1][2] * matriz[2][1])
-  let y3 = - (matriz[0][1] * matriz[1][0] * matriz[2][2])
-  return x1 + x2 + x3 + y1 + y2 + y3
-}
 
 $(function () {
   $('#botaoModalObj').click(function () {
@@ -339,8 +316,6 @@ $(function () {
       $('#divSuperficies').append(txt, input);
     }
   });
-
-
 
   $('#inputQtdVertices').on('input', function () {
     $('#divVertices').empty();
